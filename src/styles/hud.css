@@ -1,0 +1,72 @@
+/* HUD uses two normal-flow grids: no scoreboard, labels or statistics share an absolute slot. */
+#ui .hud-panel {
+  position:absolute;top:calc(8px + var(--safe-t));left:50%;transform:translateX(-50%);
+  width:min(960px,calc(100% - 24px - var(--safe-l) - var(--safe-r)));
+  padding:10px 12px;border:1px solid #8a7aa04a;border-radius:18px;
+  background:linear-gradient(150deg,#100d27ee,#15132be8);box-shadow:0 8px 30px #0005;
+  display:grid;gap:8px;pointer-events:none;
+}
+#ui .hud-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+#ui .hud-left{position:static;display:flex;flex-direction:row;align-items:baseline;gap:10px;min-width:0}
+#ui .hud-frame{font-size:clamp(13px,2vw,19px);font-weight:900;color:#ffe08d;text-shadow:none;white-space:nowrap}
+#ui .hud-ball{font-size:11px;font-weight:600;color:#c5c2d5;text-shadow:none;white-space:nowrap}
+#ui .hud-panel .pause-btn{position:static;min-height:36px;width:38px;height:36px;padding:7px;border:1px solid #887db366;border-radius:10px;box-shadow:none;pointer-events:auto}
+#ui .hud-scoreboards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
+#ui .hud-scoreboards:has(.duel-strip[hidden]){grid-template-columns:minmax(0,1fr)}
+#ui .hud-top,#ui .duel-strip{position:static;transform:none;left:auto;top:auto;min-width:0;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:none;display:block}
+#ui .score-panel-label{display:flex;justify-content:space-between;align-items:center;gap:8px;min-width:0;color:#d0c9e1;font-size:11px;font-weight:700;min-height:18px;margin:0 2px 5px}
+#ui .score-panel-label b{font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#ui .bot-stage{color:#8ee9e4;font-size:10px;white-space:nowrap}
+#ui .score-panel .card,#ui .duel-final-card .card{width:100%;border:1px solid #9386bd77;border-radius:9px;box-shadow:none;--cell:48px;background:#f5efd9}
+#ui .score-panel .card-frames,#ui .duel-final-card .card-frames{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) minmax(0,1.2fr) minmax(0,1.15fr)}
+#ui .score-panel .cf,#ui .duel-final-card .cf{width:auto!important;height:52px;border-right:1px solid #5a507477;min-width:0}
+#ui .score-panel .cf-n,#ui .duel-final-card .cf-n{position:static;left:auto;top:auto;font-size:8px;line-height:11px;padding-left:5px;text-align:left;opacity:.65}
+#ui .score-panel .cf-rolls,#ui .duel-final-card .cf-rolls{height:19px;min-height:19px;padding-left:5px}
+#ui .score-panel .cf-rolls i,#ui .duel-final-card .cf-rolls i{width:21px;max-width:33%;border-width:1px;font-size:12px;line-height:18px}
+#ui .score-panel .cf-t,#ui .duel-final-card .cf-t{font-size:16px;line-height:22px;padding:0}
+#ui .score-panel .cf-total,#ui .duel-final-card .cf-total{border-right:0;background:#272043}
+#ui .score-panel .cf-total .cf-n,#ui .duel-final-card .cf-total .cf-n{opacity:.9;color:#ccc0e4}
+#ui .score-panel .cf-total .cf-t,#ui .duel-final-card .cf-total .cf-t{font-size:25px;padding:0;color:#ffdf82}
+#ui .hud-details{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+#ui .hud-cond{display:flex;position:static;flex-direction:row;gap:6px;flex-wrap:wrap;margin:0;min-width:0}
+#ui .hud-cond span{background:none;border:0;padding:0;font-size:9px;font-weight:500;color:#a9becb;white-space:nowrap}
+#ui .hud-right{position:static;display:flex;flex-direction:row;gap:12px;flex-wrap:wrap;align-items:center;margin-left:auto}
+#ui .hud-stat{background:none;border:0;padding:0;border-radius:0;gap:5px;font-size:9px;font-weight:500;color:#bfb8d2;white-space:nowrap}
+#ui .hud-stat b{font-size:12px;color:#e5d79e}
+#ui .hud-bottom{position:absolute;bottom:calc(10px + var(--safe-b));left:50%;transform:translateX(-50%);width:min(700px,calc(100% - 28px - var(--safe-l) - var(--safe-r)));display:grid;gap:8px;pointer-events:none}
+#ui .hud-bottom .hint{position:static;left:auto;bottom:auto;transform:none;max-width:none;width:100%;margin:0;padding:8px 12px;border:1px solid #8f79b35c;background:#120e29d9;border-radius:10px;font-size:11px;line-height:1.4;font-weight:600;white-space:normal;text-align:center;text-wrap:balance;overflow:visible;text-overflow:clip;animation:none}
+#ui .hud-bottom .meter{position:static;left:auto;bottom:auto;transform:none;width:100%;margin:0;padding:10px 12px;border:1px solid #8a7bb066;border-radius:12px;box-shadow:none;gap:5px}
+#ui .hud-bottom .meter-row{font-size:10px;gap:6px;grid-template-columns:4.2em 1fr auto}
+#ui .hud-bottom .meter-bar,#ui .hud-bottom .spin-bar{height:14px;border-width:1px}
+body.has-touch #ui[data-phase='aim'] .hud-bottom .touch,body.has-touch #ui[data-phase='charge'] .hud-bottom .touch{display:flex;align-items:center;gap:12px;padding:0 2px}
+#ui .hud-bottom .touch-btn,#ui .hud-bottom .touch-throw{position:static;left:auto;right:auto;bottom:auto;border-width:2px;box-shadow:0 4px 12px #0005}
+#ui .hud-bottom .touch-btn{width:56px;height:56px;flex:0 0 56px;font-size:22px}
+#ui .hud-bottom .touch-throw{margin-left:auto;width:82px;height:70px;border-radius:22px;font-size:13px}
+#ui .duel-final-card{display:block;margin:12px 0}
+.creator-credit{font:500 10px/1.5 system-ui,sans-serif;letter-spacing:.08em;color:#c4c1d3;text-align:center;margin:0 0 4px;padding:3px 10px;max-width:100%}
+#ui .creator-credit{white-space:normal}
+@media(max-width:699px){
+ #ui .hud-scoreboards{grid-template-columns:minmax(0,1fr);gap:7px}
+ #ui .hud-panel{padding:8px 10px;gap:7px}
+ #ui .score-panel .cf{height:49px}
+ #ui .score-panel .cf-t{font-size:15px;line-height:19px}
+ #ui .hud-details{gap:4px}
+ #ui .hud-right{gap:10px}
+ #ui .hud-cond{display:none}
+}
+@media(max-height:500px) and (min-width:600px){
+ #ui .hud-panel{padding:6px 10px;gap:4px;width:min(850px,calc(100% - 24px - var(--safe-l) - var(--safe-r)))}
+ #ui .hud-toolbar{min-height:27px}
+ #ui .hud-panel .pause-btn{height:28px;min-height:28px;width:34px;padding:5px}
+ #ui .score-panel-label{min-height:14px;font-size:9px;margin-bottom:3px}
+ #ui .score-panel .cf{height:44px}
+ #ui .score-panel .cf-rolls{height:16px;min-height:16px}
+ #ui .score-panel .cf-rolls i{line-height:15px;font-size:10px}
+ #ui .score-panel .cf-t{font-size:13px;line-height:17px}
+ #ui .hud-bottom{gap:5px;width:min(600px,calc(100% - 28px - var(--safe-l) - var(--safe-r)))}
+ #ui .hud-bottom .hint{padding:5px 9px;font-size:10px}
+ #ui .hud-bottom .touch-btn{width:46px;height:44px;flex-basis:46px;border-radius:14px;font-size:18px}
+ #ui .hud-bottom .touch-throw{height:44px;width:100px;border-radius:14px}
+ #ui .hud-bottom .meter{padding:6px 10px}
+ .creator-credit{font-size:9px;line-height:1.3;margin:0;padding:0}
+}
