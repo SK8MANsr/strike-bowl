@@ -1,4 +1,11 @@
-# Strike Bowl 1.3.1 — entrega final
+# Strike Bowl 1.3.2 — entrega final
+
+## Correção 1.3.2 — posicionamento do arsenal
+
+- O botão de seleção deixou de flutuar sobre a súmula.
+- O placar e o botão agora ocupam linhas próprias no HUD, com margem segura em telas estreitas.
+- O drawer aberto segue a mesma âncora e não cobre o controle de pausa ou os dados do placar.
+
 
 ## Correção 1.3.1 — arsenal recolhido
 
