@@ -1,4 +1,12 @@
-# Strike Bowl 1.3.0 — entrega final
+# Strike Bowl 1.3.1 — entrega final
+
+## Correção 1.3.1 — arsenal recolhido
+
+- O arsenal não fica mais aberto durante a jogada.
+- Um botão lateral discreto abre o painel somente quando solicitado.
+- Cada bola agora exibe descrição da particularidade, bônus, estado de desbloqueio e seleção atual.
+- O painel fecha após a seleção ou com Escape, devolvendo o foco ao botão e mantendo a pista visível.
+
 
 ## Atualização 1.3.0 — arsenal e campanha premium
 

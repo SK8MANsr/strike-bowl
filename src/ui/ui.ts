@@ -142,8 +142,9 @@ export class Ui implements GameUI {
         <div class="hud-stat"><span data-i18n="hud.max"></span><b data-hud="max">150</b></div>
       </div>
     </div>
-    <aside class="ball-rack" aria-live="polite"></aside>
   </div>
+  <button class="ball-launcher" data-act="balls" aria-controls="ball-drawer" aria-expanded="false"><span class="ball-launcher-swatch"></span><span data-i18n="ball.open"></span></button>
+  <aside class="ball-drawer" id="ball-drawer" hidden aria-label="Ball arsenal"><div class="ball-drawer-head"><div><b data-i18n="ball.title"></b><small data-i18n="ball.hint"></small></div><button class="btn btn-icon ball-close" data-act="ballsClose" data-i18n-aria="ball.close">×</button></div><div class="ball-rack" aria-live="polite"></div></aside>
   <div class="hud-combo outlined" hidden></div>
   <div class="banner" aria-live="polite"><b class="banner-big outlined"></b><span class="banner-sub"></span></div>
   <div class="popups"></div>
@@ -374,6 +375,10 @@ export class Ui implements GameUI {
       return
     }
     if (e.code === 'Escape') {
+      if (this.screen === 'hud' && !this.root.querySelector<HTMLElement>('.ball-drawer')?.hidden) {
+        this.closeBalls()
+        return
+      }
       // HUD/pause use the unified pause action in main; do not toggle twice.
       if (this.screen !== 'hud' && this.screen !== 'pause' && this.screen !== 'title' && this.screen !== 'results' && this.screen !== 'boot') this.back()
       return
@@ -390,6 +395,7 @@ export class Ui implements GameUI {
     this.audio.unlock()
     if (el.dataset.ball) {
       this.actions.ball(el.dataset.ball as BallId)
+      this.closeBalls()
       return
     }
     if (el.dataset.period) {
@@ -412,6 +418,8 @@ export class Ui implements GameUI {
       return
     }
     switch (el.dataset.act) {
+      case 'balls': this.toggleBalls(); break
+      case 'ballsClose': this.closeBalls(); break
       case 'campaign': this.actions.campaign(); break
       case 'stage': this.actions.stage(Number(el.dataset.stage)); break
       case 'play': this.actions.play(); break
@@ -432,16 +440,42 @@ export class Ui implements GameUI {
     }
   }
 
+  private toggleBalls(): void {
+    const drawer = this.root.querySelector<HTMLElement>('.ball-drawer')
+    const launcher = this.root.querySelector<HTMLButtonElement>('.ball-launcher')
+    if (!drawer || !launcher) return
+    const open = drawer.hidden
+    drawer.hidden = !open
+    launcher.setAttribute('aria-expanded', String(open))
+    if (open) {
+      this.refreshBalls()
+      requestAnimationFrame(() => this.root.querySelector<HTMLButtonElement>('.ball-card:not(:disabled)')?.focus())
+    } else launcher.focus()
+  }
+
+  private closeBalls(): void {
+    const drawer = this.root.querySelector<HTMLElement>('.ball-drawer')
+    const launcher = this.root.querySelector<HTMLButtonElement>('.ball-launcher')
+    if (!drawer || !launcher || drawer.hidden) return
+    drawer.hidden = true
+    launcher.setAttribute('aria-expanded', 'false')
+    launcher.focus({ preventScroll: true })
+  }
+
   refreshBalls(): void {
     const rack = this.root.querySelector<HTMLElement>('.ball-rack')
     if (!rack) return
+    const equipped = BALLS[this.save.data.equippedBall]
+    const launcherSwatch = this.root.querySelector<HTMLElement>('.ball-launcher-swatch')
+    if (launcherSwatch) launcherSwatch.style.cssText = `--ball:${equipped.color};--ball-accent:${equipped.accent}`
     const unlocked = new Set(this.save.data.ballsUnlocked)
-    rack.innerHTML = `<div class="ball-rack-head"><span>${esc(this.t('ball.title'))}</span><small>${esc(this.t('ball.hint'))}</small></div><div class="ball-rack-list">${BALL_ORDER.map(id => {
+    rack.innerHTML = `<div class="ball-rack-list">${BALL_ORDER.map(id => {
       const spec = BALLS[id]
       const available = unlocked.has(id)
       const selected = this.save.data.equippedBall === id
       const bonus = spec.bonuses.power ? `+${Math.round(spec.bonuses.power * 100)}% ${this.t('ball.power')}` : spec.bonuses.precision ? `+${Math.round(spec.bonuses.precision * 100)}% ${this.t('ball.precision')}` : spec.bonuses.control ? `+${Math.round(spec.bonuses.control * 100)}% ${this.t('ball.control')}` : this.t('ball.balanced')
-      return `<button class="ball-card ${selected ? 'selected' : ''} ${available ? '' : 'locked'}" data-ball="${id}" ${available ? '' : 'disabled'} aria-pressed="${selected}" style="--ball:${spec.color};--ball-accent:${spec.accent}"><span class="ball-swatch"></span><span class="ball-copy"><b>${esc(this.t(`ball.${id}.name`))}</b><small>${esc(available ? bonus : this.t('ball.locked'))}</small></span>${selected ? '<i>✓</i>' : ''}</button>`
+      const description = this.t(`ball.${id}.description`)
+      return `<button class="ball-card ${selected ? 'selected' : ''} ${available ? '' : 'locked'}" data-ball="${id}" ${available ? '' : 'disabled'} aria-pressed="${selected}" style="--ball:${spec.color};--ball-accent:${spec.accent}"><span class="ball-swatch"></span><span class="ball-copy"><b>${esc(this.t(`ball.${id}.name`))}</b><small class="ball-bonus">${esc(available ? bonus : this.t('ball.locked'))}</small><span class="ball-description">${esc(description)}</span></span>${selected ? '<i>✓</i>' : ''}</button>`
     }).join('')}</div>`
   }
 

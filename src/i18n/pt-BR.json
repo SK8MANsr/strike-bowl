@@ -156,5 +156,12 @@
   "ball.precision.name": "Vector",
   "ball.power.name": "Titan",
   "ball.control.name": "Flux",
-  "ball.hybrid.name": "Apex"
+  "ball.hybrid.name": "Apex",
+  "ball.open": "Bolas",
+  "ball.close": "Fechar arsenal",
+  "ball.classic.description": "Equilíbrio confiável para qualquer pista.",
+  "ball.precision.description": "Mais precisão na mira e no guia de trajetória.",
+  "ball.power.description": "Mais força para atravessar a formação de pinos.",
+  "ball.control.description": "Mais controle para aplicar efeito lateral.",
+  "ball.hybrid.description": "Combina precisão, força e controle em uma única bola."
 }

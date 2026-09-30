@@ -156,5 +156,12 @@
   "ball.precision.name": "Vector",
   "ball.power.name": "Titan",
   "ball.control.name": "Flux",
-  "ball.hybrid.name": "Apex"
+  "ball.hybrid.name": "Apex",
+  "ball.open": "球具",
+  "ball.close": "关闭装备",
+  "ball.classic.description": "适合所有球道的可靠平衡。",
+  "ball.precision.description": "提高瞄准精度，让轨迹提示更清晰。",
+  "ball.power.description": "增加力度，更有力地穿过球瓶阵型。",
+  "ball.control.description": "增强控制力，方便施加侧旋。",
+  "ball.hybrid.description": "将瞄准、力度与弧线融于一体。"
 }

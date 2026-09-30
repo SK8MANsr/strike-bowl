@@ -1,4 +1,4 @@
-# Strike Bowl • Boliche Neon — 1.3.0
+# Strike Bowl • Boliche Neon — 1.3.1
 
 Jogo web 3D completo de cinco rodadas, construído com Three.js, Rapier e Vite.
 A interface neon, física, trilha/efeitos sintetizados, câmera de acompanhamento e cartões de compartilhamento foram preservados e aprimorados sobre a base original.
@@ -24,6 +24,7 @@ O servidor local recebe conexões somente do próprio computador. Para jogar no 
 - Arsenal de bolas coloridas desbloqueáveis: Vector (mira), Titan (força), Flux (efeito) e Apex (híbrida), selecionável antes de cada jogada.
 - Mapa de campanha redesenhado em padrão premium enterprise, com rota, progresso, estados e foco na próxima disputa.
 - Áudio procedural refinado com rolagem da bola, impacto grave, clatter de madeira e quedas escalonadas de pinos.
+- Arsenal de bolas recolhido por padrão em um botão lateral; o painel mostra descrição, bônus e seleção sem obstruir a pista.
 - Qualidade gráfica leve/equilibrada/máxima, bloom na qualidade máxima e redução de movimento.
 - Música e efeitos sonoros com ajuste de volume e opção de silêncio.
 - Recordes, ajustes e melhores partidas locais, com tolerância a armazenamento indisponível.
