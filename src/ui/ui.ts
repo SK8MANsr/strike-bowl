@@ -126,7 +126,7 @@ export class Ui implements GameUI {
   <div class="hud-panel">
     <div class="hud-toolbar">
       <div class="hud-left"><div class="hud-frame"></div><div class="hud-ball"></div></div>
-      <button class="btn btn-icon pause-btn" data-act="pause" aria-label="pause">${ICON.pause}</button>
+      <button class="btn btn-icon pause-btn" data-act="pause" data-i18n-aria="a11y.pause">${ICON.pause}</button>
     </div>
     <div class="hud-scoreboards">
       <div class="hud-top score-panel"><div class="score-panel-label" data-i18n="hud.player"></div>${card}</div>
@@ -151,9 +151,9 @@ export class Ui implements GameUI {
   </div>
   <div class="hint"></div>
   <div class="touch">
-    <button class="touch-btn" data-move="-1" aria-label="left">◀</button>
-    <button class="touch-btn" data-move="1" aria-label="right">▶</button>
-    <button class="touch-throw" aria-label="throw"><span data-i18n="btn.throw"></span></button>
+    <button class="touch-btn" data-move="-1" data-i18n-aria="a11y.left">◀</button>
+    <button class="touch-btn" data-move="1" data-i18n-aria="a11y.right">▶</button>
+    <button class="touch-throw" data-i18n-aria="a11y.throw"><span data-i18n="btn.throw"></span></button>
   </div>
   </div>
 </section>
@@ -287,6 +287,7 @@ export class Ui implements GameUI {
   private translate(): void {
     for (const el of this.root.querySelectorAll<HTMLElement>('[data-i18n]')) el.textContent = this.t(el.dataset.i18n!)
     for (const el of this.root.querySelectorAll<HTMLInputElement>('[data-i18n-ph]')) el.placeholder = this.t(el.dataset.i18nPh!)
+    for (const el of this.root.querySelectorAll<HTMLElement>('[data-i18n-aria]')) el.setAttribute('aria-label', this.t(el.dataset.i18nAria!))
     this.hudCache.clear()
     this.renderHow()
     if (this.screen === 'title') this.renderTitle()

@@ -1,5 +1,5 @@
 node_modules/
 dist/
 shots/
-shots/
+dist-test/
 server/node_modules/

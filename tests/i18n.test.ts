@@ -29,4 +29,13 @@ describe('i18n', () => {
     for (const [key, value] of Object.entries(en)) expect(vars((zh as Record<string, string>)[key]), key).toEqual(vars(value))
     for (const [key, value] of Object.entries(en)) expect(vars((pt as Record<string, string>)[key]), key).toEqual(vars(value))
   })
+
+  it('provides translated accessible labels for game controls', () => {
+    for (const locale of [en, pt, zh]) {
+      expect(locale['a11y.pause']).toBeTruthy()
+      expect(locale['a11y.left']).toBeTruthy()
+      expect(locale['a11y.right']).toBeTruthy()
+      expect(locale['a11y.throw']).toBeTruthy()
+    }
+  })
 })

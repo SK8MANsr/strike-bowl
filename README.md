@@ -1,4 +1,4 @@
-# Strike Bowl • Boliche Neon — 1.1.0
+# Strike Bowl • Boliche Neon — 1.2.1
 
 Jogo web 3D completo de cinco rodadas, construído com Three.js, Rapier e Vite.
 A interface neon, física, trilha/efeitos sintetizados, câmera de acompanhamento e cartões de compartilhamento foram preservados e aprimorados sobre a base original.
@@ -106,6 +106,13 @@ O servidor recalcula a pontuação e verifica duração e sessão. O ranking é 
 
 Fontes Figtree, Sora e Noto Sans SC: SIL OFL, com avisos preservados em `public/fonts/`.
 As bibliotecas permanecem sob suas licenças próprias. O pacote não inclui o navegador de testes ou node_modules.
+
+### Atualização 1.2.1 — correções de acessibilidade e validação
+
+Os controles de pausa, movimento e lançamento agora expõem rótulos traduzidos
+em português, inglês e chinês para leitores de tela. O teste de layout aceita
+`BROWSER_EXECUTABLE_PATH`, como os demais testes de navegador, e o `.gitignore`
+não inclui mais a build temporária `dist-test/`.
 
 ### Atualização 1.2.0 — interface e placares
 

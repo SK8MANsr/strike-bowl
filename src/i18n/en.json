@@ -140,5 +140,9 @@
   "board.local": "Best games on this device",
   "board.casual": "Casual leaderboard · player-submitted results",
   "results.rankUnavailable": "Score submitted; ranking unavailable",
-  "hud.player": "You"
+  "hud.player": "You",
+  "a11y.pause": "Pause game",
+  "a11y.left": "Move left",
+  "a11y.right": "Move right",
+  "a11y.throw": "Throw ball"
 }

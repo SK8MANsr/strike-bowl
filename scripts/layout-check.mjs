@@ -5,7 +5,7 @@ const server=spawn(process.execPath,['node_modules/vite/bin/vite.js','preview','
 let browser;const checks=[]
 try{
  for(let i=0;i<50;i++){try{if((await fetch('http://127.0.0.1:4940')).ok)break}catch{}await new Promise(r=>setTimeout(r,200))}
- browser=await chromium.launch({executablePath:'/tmp/strike-chromium/chromium',args:['--ignore-gpu-blocklist','--use-angle=swiftshader','--enable-unsafe-swiftshader']})
+ browser=await chromium.launch({executablePath:process.env.BROWSER_EXECUTABLE_PATH||undefined,args:['--ignore-gpu-blocklist','--use-angle=swiftshader','--enable-unsafe-swiftshader']})
  const context=await browser.newContext({locale:'pt-BR',hasTouch:true,isMobile:true});const page=await context.newPage()
  await page.goto('http://127.0.0.1:4940');await page.waitForSelector('[data-screen="title"].is-active')
  for(const [width,height] of [[375,667],[430,744],[430,932],[844,390],[932,430],[1440,900]]){

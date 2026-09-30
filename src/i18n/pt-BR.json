@@ -140,5 +140,9 @@
   "board.local": "Melhores partidas deste dispositivo",
   "board.casual": "Ranking casual · resultados enviados pelos jogadores",
   "results.rankUnavailable": "Pontuação enviada; posição indisponível",
-  "hud.player": "Você"
+  "hud.player": "Você",
+  "a11y.pause": "Pausar partida",
+  "a11y.left": "Mover para a esquerda",
+  "a11y.right": "Mover para a direita",
+  "a11y.throw": "Lançar bola"
 }

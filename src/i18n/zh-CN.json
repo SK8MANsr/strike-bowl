@@ -140,5 +140,9 @@
   "board.local": "本设备最佳成绩",
   "board.casual": "休闲排行榜 · 玩家提交的成绩",
   "results.rankUnavailable": "成绩已提交；排名暂不可用",
-  "hud.player": "你"
+  "hud.player": "你",
+  "a11y.pause": "暂停比赛",
+  "a11y.left": "向左移动",
+  "a11y.right": "向右移动",
+  "a11y.throw": "投球"
 }
