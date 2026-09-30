@@ -11,6 +11,7 @@ import { Effects } from './fx'
 import { isSplit } from './pinshape'
 import { BowlingSim, predictPath, type ThrowParams } from './sim'
 import { BALLS, DEFAULT_BALL, type BallId } from './balls'
+import { evaluateChallenge, type ChallengeResult } from './challenges'
 
 export type Phase = 'title' | 'aim' | 'charge' | 'roll' | 'show' | 'reset' | 'over'
 
@@ -27,7 +28,7 @@ export type HudState = {
   standing: number
 }
 
-export type Summary = { score: number; rolls: number[]; durationMs: number; strikes: number; spares: number; newBest: boolean; beatTarget: boolean }
+export type Summary = { score: number; rolls: number[]; durationMs: number; strikes: number; spares: number; newBest: boolean; beatTarget: boolean; challenge?: ChallengeResult }
 
 export interface GameUI {
   hud(h: HudState): void
@@ -635,7 +636,8 @@ export class Game {
       this.alley.cheer(1)
     }
     this.alley.screen.play({ kind: 'final', big: String(score), small: this.ui.t('screen.final') })
-    this.ui.over({ score, rolls: [...this.rolls], durationMs, strikes: this.strikes, spares: this.spares, newBest, beatTarget })
+    const challenge = this.lane.challenge ? { id: this.lane.challenge.id, success: evaluateChallenge(this.lane.challenge, { score, rolls: [...this.rolls], strikes: this.strikes, spares: this.spares }) } : undefined
+    this.ui.over({ score, rolls: [...this.rolls], durationMs, strikes: this.strikes, spares: this.spares, newBest, beatTarget, challenge })
   }
 
   /** Render-time sync after physics interpolation. */

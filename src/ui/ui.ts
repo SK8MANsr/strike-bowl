@@ -7,6 +7,7 @@ import type { GameUI, HudState, Phase, Summary } from '../game/game'
 import type { BoardPage, Leaderboard, SubmitResult } from '../net/leaderboard'
 import { challengeLink, drawShareCard } from './share'
 import { BALLS, BALL_ORDER, type BallId } from '../game/balls'
+import type { ChallengeSpec, LaneProfile } from '../game/challenges'
 
 export type Screen = 'boot' | 'title' | 'hud' | 'pause' | 'settings' | 'board' | 'results' | 'share' | 'campaign'
 
@@ -58,6 +59,8 @@ export class Ui implements GameUI {
   private scoreAnimation = 0
   day = ''
   challenge: { score: number; name: string } | null = null
+  dailyChallenge: ChallengeSpec | null = null
+  laneProfile: LaneProfile | null = null
   onNameChange?: (name: string) => void
   onHud?: (h: HudState) => void
   onResults?: () => void
@@ -104,6 +107,7 @@ export class Ui implements GameUI {
     <h1 class="logo"><span class="logo-pins">${ICON.pin}${ICON.pin}${ICON.pin}</span><span class="logo-cn outlined" data-i18n="title.logo"></span><span class="logo-en outlined">STRIKE BOWL</span></h1>
     <p class="tagline" data-i18n="title.tagline"></p>
     <div class="challenge-chip" hidden></div>
+    <div class="daily-challenge" hidden></div>
     <button class="btn btn-primary btn-play" data-act="play"><span data-i18n="title.play"></span><kbd>Space</kbd></button>
     <button class="btn campaign-entry" data-act="campaign"></button>
     <div class="how">
@@ -142,9 +146,10 @@ export class Ui implements GameUI {
         <div class="hud-stat"><span data-i18n="hud.max"></span><b data-hud="max">150</b></div>
       </div>
     </div>
+    <div class="hud-challenge" hidden></div>
   </div>
   <button class="ball-launcher" data-act="balls" aria-controls="ball-drawer" aria-expanded="false"><span class="ball-launcher-swatch"></span><span data-i18n="ball.open"></span></button>
-  <aside class="ball-drawer" id="ball-drawer" hidden aria-label="Ball arsenal"><div class="ball-drawer-head"><div><b data-i18n="ball.title"></b><small data-i18n="ball.hint"></small></div><button class="btn btn-icon ball-close" data-act="ballsClose" data-i18n-aria="ball.close">×</button></div><div class="ball-rack" aria-live="polite"></div></aside>
+  <aside class="ball-drawer" id="ball-drawer" hidden data-i18n-aria="ball.aria"><div class="ball-drawer-head"><div><b data-i18n="ball.title"></b><small data-i18n="ball.hint"></small></div><button class="btn btn-icon ball-close" data-act="ballsClose" data-i18n-aria="ball.close">×</button></div><div class="ball-rack" aria-live="polite"></div></aside>
   <div class="hud-combo outlined" hidden></div>
   <div class="banner" aria-live="polite"><b class="banner-big outlined"></b><span class="banner-sub"></span></div>
   <div class="popups"></div>
@@ -160,6 +165,7 @@ export class Ui implements GameUI {
     <button class="touch-throw" data-i18n-aria="a11y.throw"><span data-i18n="btn.throw"></span></button>
   </div>
   </div>
+  <div class="game-status visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
 </section>
 <section class="screen modal-screen pause" data-screen="pause">
   <div class="modal">
@@ -202,6 +208,7 @@ export class Ui implements GameUI {
     <div class="res-card">${card}</div>
     <div class="res-stats"></div>
     <div class="res-target" hidden></div>
+    <div class="res-challenge" hidden></div>
     <div class="res-rank"></div>
     <div class="res-name"><label><span data-i18n="results.name"></span><input type="text" maxlength="16" autocomplete="off" spellcheck="false" data-i18n-ph="results.namePh"></label><button class="btn btn-small" data-act="saveName" data-i18n="btn.save"></button></div>
     <div class="res-actions">
@@ -295,6 +302,7 @@ export class Ui implements GameUI {
     for (const el of this.root.querySelectorAll<HTMLElement>('[data-i18n-aria]')) el.setAttribute('aria-label', this.t(el.dataset.i18nAria!))
     this.hudCache.clear()
     this.renderHow()
+    this.renderDailyChallenge()
     if (this.screen === 'title') this.renderTitle()
     if (this.lastHud) this.hud(this.lastHud)
     if (this.summary && (this.screen === 'results' || this.stack.includes('results'))) this.renderResults()
@@ -507,7 +515,21 @@ export class Ui implements GameUI {
       chip.hidden = false
       chip.textContent = this.challenge.name ? this.t('title.challenge', { name: this.challenge.name, score: this.challenge.score }) : this.t('title.challengeAnon', { score: this.challenge.score })
     } else chip.hidden = true
+    this.renderDailyChallenge()
     void this.renderMiniBoard()
+  }
+
+  private renderDailyChallenge(): void {
+    const title = this.root.querySelector<HTMLElement>('.daily-challenge')
+    if (title) {
+      title.hidden = !this.dailyChallenge
+      if (this.dailyChallenge) title.innerHTML = `<b>${esc(this.t('challenge.title'))} · ${esc(this.t(this.dailyChallenge.nameKey))}</b><span>${esc(this.t(this.dailyChallenge.descriptionKey))}</span>${this.laneProfile ? `<small>${esc(this.t('challenge.profile'))}: ${esc(this.t(this.laneProfile.nameKey))} · ${esc(this.t(this.laneProfile.descriptionKey))}</small>` : ''}`
+    }
+    const hud = this.root.querySelector<HTMLElement>('.hud-challenge')
+    if (hud) {
+      hud.hidden = !this.dailyChallenge
+      if (this.dailyChallenge) hud.innerHTML = `<b>${esc(this.t(this.dailyChallenge.nameKey))}</b><span>${esc(this.t(this.dailyChallenge.descriptionKey))}</span>${this.laneProfile ? `<small>${esc(this.t(this.laneProfile.nameKey))}</small>` : ''}`
+    }
   }
 
   private async renderMiniBoard(): Promise<void> {
@@ -536,6 +558,8 @@ export class Ui implements GameUI {
     const tgt = this.q('.hud-target')
     tgt.hidden = h.target === null
     if (h.target !== null) this.set('target', String(h.target))
+    this.renderDailyChallenge()
+    this.q('.game-status').textContent = `${this.t('hud.frameOf', { n: h.frame + 1 })}, ${this.t('hud.ballN', { n: h.ball + 1 })}. ${cond.replace(/<[^>]+>/g, '')}. ${this.t('hud.total')}: ${h.total}.`
     const combo = this.q('.hud-combo')
     combo.hidden = h.combo < 2
     if (h.combo >= 2) combo.textContent = this.t('hud.combo', { n: h.combo })
@@ -703,6 +727,12 @@ export class Ui implements GameUI {
       tgt.classList.toggle('is-win', s.beatTarget)
       tgt.textContent = s.beatTarget ? this.t('results.targetWin', { score: this.challenge.score }) : this.t('results.targetLose', { n: this.challenge.score - s.score + (s.score === this.challenge.score ? 1 : 0), score: this.challenge.score })
     } else tgt.hidden = true
+    const challenge = this.q('.res-challenge')
+    if (s.challenge && this.dailyChallenge) {
+      challenge.hidden = false
+      challenge.classList.toggle('is-win', s.challenge.success)
+      challenge.textContent = `${this.t('challenge.title')}: ${this.t(this.dailyChallenge.nameKey)} — ${this.t(s.challenge.success ? 'challenge.success' : 'challenge.failed')}`
+    } else challenge.hidden = true
     const rank = this.q('.res-rank')
     const r = this.submit
     if (r === 'pending' || r === undefined) rank.innerHTML = `<span class="muted">${esc(this.t('results.submitting'))}</span>`

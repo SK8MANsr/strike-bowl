@@ -1,4 +1,31 @@
-# Strike Bowl 1.3.2 — entrega final
+# Strike Bowl 1.4.0 — carregamento, acessibilidade e desafios
+
+## Atualização 1.4.0
+
+- Rapier e o motor de jogo agora são carregados sob demanda após o jogador escolher jogar; o renderer leve permanece no boot para manter a tela inicial responsiva.
+- A build de teste continua inicializando o hook de automação de forma eager, sem reintroduzir o custo no deploy de produção.
+- Removido o bloqueio de zoom do navegador.
+- Adicionada região `aria-live` com fase, bola, condição e pontuação para feedback não visual durante a partida.
+- Adicionados quatro desafios diários: Mira cirúrgica, Jogo limpo, Potência máxima e Virada.
+- Adicionados quatro perfis determinísticos de pista: Clássica, Óleo longo, Deriva lateral e Hook agressivo.
+- Desafios são avaliados pela súmula real e aparecem no título, HUD e resultado.
+- Campanha preserva o balanceamento clássico e continua compatível com saves anteriores.
+
+### Evidência 1.4.0
+
+| Verificação | Resultado |
+|---|---|
+| Vitest completo | 66 testes aprovados em 11 arquivos |
+| Build de produção/PWA | Aprovado; Rapier separado em chunk lazy |
+| Smoke | Aprovado |
+| Aceitação mobile/teclado/gamepad | Aprovada |
+| Campanha oficial | CAMPAIGN PASS |
+| Check offline | offline: OK |
+| Layout responsivo | Aprovado em 6 viewports |
+
+Data de validação: 30/09/2026.
+
+## Correção 1.3.2 — posicionamento do arsenal
 
 ## Correção 1.3.2 — posicionamento do arsenal
 

@@ -43,7 +43,7 @@ export class CampaignStore {
   finish(stage: number, player: number, bot: number): void { this.data = recordMatch(this.data, stage, player, bot); this.persist() }
 }
 export function campaignLane(stage: number): DailyLane {
-  const lane = dailyLane(`campaign-${stage + 1}`)
+  const lane = dailyLane(`campaign-${stage + 1}`, false)
   lane.frames = lane.frames.map((f, i) => ({ ...f, guide: Math.max(.3, 1 - stage * .04 - i * .07), drift: f.drift * (.4 + stage * .055) }))
   return lane
 }
