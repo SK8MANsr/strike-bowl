@@ -13,7 +13,7 @@ A pasta `dist/` contém a versão compilada de produção. Não precisa instalar
 - Endereço local: `http://127.0.0.1:8080/`. Ctrl+C encerra o servidor.
 
 Recomendado: Node.js 24. A abertura direta de `dist/index.html` pelo protocolo file:// não é suportada.
- O servidor local recebe conexões somente do próprio computador. Para jogar no iPhone, publique `dist/` em HTTPS. A configuração de build para Vercel está incluída; a publicação de produção desta versão será registrada após a validação da URL.
+O servidor local recebe conexões somente do próprio computador. Para jogar no iPhone, publique `dist/` em HTTPS. A configuração de build para Vercel está incluída; a publicação de produção desta versão foi validada em `https://strike-bowl.vercel.app/`.
 
 ## O que está incluído
 
