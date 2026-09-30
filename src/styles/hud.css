@@ -11,6 +11,9 @@
 #ui .hud-frame{font-size:clamp(13px,2vw,19px);font-weight:900;color:#ffe08d;text-shadow:none;white-space:nowrap}
 #ui .hud-ball{font-size:11px;font-weight:600;color:#c5c2d5;text-shadow:none;white-space:nowrap}
 #ui .hud-panel .pause-btn{position:static;min-height:36px;width:38px;height:36px;padding:7px;border:1px solid #887db366;border-radius:10px;box-shadow:none;pointer-events:auto}
+#ui .ball-rack{position:absolute;right:14px;top:112px;width:178px;padding:10px;border:1px solid #6f6aa080;border-radius:16px;background:linear-gradient(160deg,#16152ee8,#0b0b1be8);box-shadow:0 14px 35px #0007;pointer-events:auto;backdrop-filter:blur(12px)}
+#ui .ball-rack-head{display:grid;gap:2px;margin-bottom:8px}.ball-rack-head span{font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#f5f4ff}.ball-rack-head small{font-size:9px;color:#aaa7c9}
+#ui .ball-rack-list{display:grid;gap:5px}.ball-card{display:flex;align-items:center;gap:7px;width:100%;padding:6px;border:1px solid #77719b55;border-radius:10px;background:#ffffff08;color:#fff;text-align:left;font:inherit;cursor:pointer}.ball-card:hover,.ball-card.selected{border-color:var(--ball);background:linear-gradient(100deg,color-mix(in srgb,var(--ball) 22%,transparent),#ffffff0a)}.ball-card.locked{opacity:.42;cursor:not-allowed}.ball-swatch{width:25px;height:25px;flex:0 0 25px;border-radius:50%;background:radial-gradient(circle at 30% 25%,#fff,var(--ball) 22%,var(--ball-accent) 75%,#070612);box-shadow:0 0 12px color-mix(in srgb,var(--ball) 55%,transparent)}.ball-copy{display:grid;min-width:0;gap:2px}.ball-copy b{font-size:11px}.ball-copy small{font-size:8px;color:#bcb8d7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ball-card i{margin-left:auto;color:var(--ball);font-style:normal;font-weight:900}
 #ui .hud-scoreboards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;min-width:0}
 #ui .hud-scoreboards:has(.duel-strip[hidden]){grid-template-columns:minmax(0,1fr)}
 #ui .hud-top,#ui .duel-strip{position:static;transform:none;left:auto;top:auto;min-width:0;max-width:none;margin:0;padding:0;border:0;border-radius:0;background:none;display:block}
@@ -53,6 +56,7 @@ body.has-touch #ui[data-phase='aim'] .hud-bottom .touch,body.has-touch #ui[data-
  #ui .hud-details{gap:4px}
  #ui .hud-right{gap:10px}
  #ui .hud-cond{display:none}
+ #ui .ball-rack{position:static;width:auto;margin:1px 0 0;padding:6px}.ball-rack-list{grid-template-columns:repeat(5,1fr);gap:4px}.ball-rack-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}.ball-card{justify-content:center;padding:5px}.ball-copy{display:none}.ball-card i{display:none}.ball-swatch{width:24px;height:24px;flex-basis:24px}
 }
 @media(max-height:500px) and (min-width:600px){
  #ui .hud-panel{padding:6px 10px;gap:4px;width:min(850px,calc(100% - 24px - var(--safe-l) - var(--safe-r)))}

@@ -10,6 +10,7 @@ import type { DailyLane, FrameConditions } from './daily'
 import { Effects } from './fx'
 import { isSplit } from './pinshape'
 import { BowlingSim, predictPath, type ThrowParams } from './sim'
+import { BALLS, DEFAULT_BALL, type BallId } from './balls'
 
 export type Phase = 'title' | 'aim' | 'charge' | 'roll' | 'show' | 'reset' | 'over'
 
@@ -87,6 +88,7 @@ export class Game {
   private tickAcc = 0
   private ballVisual: THREE.Group
   private generation = 0
+  private ballId: BallId = DEFAULT_BALL
   private pendingTimers = new Set<ReturnType<typeof setTimeout>>()
 
   private cancelAnnouncements(): void {
@@ -123,6 +125,15 @@ export class Game {
     this.aim.hide()
     this.sim.holdBall(0)
     this.director.set('title', true)
+  }
+
+  setBall(id: BallId): void {
+    if (!(id in BALLS)) return
+    this.ballId = id
+    const spec = BALLS[id]
+    this.sim.ballObject.remove(this.ballVisual)
+    this.ballVisual = ballMesh(spec.color, spec.accent)
+    this.sim.ballObject.add(this.ballVisual)
   }
 
   get cond(): FrameConditions {
@@ -208,7 +219,13 @@ export class Game {
   }
 
   private throwParams(): ThrowParams {
-    return { x: this.stanceX, angle: this.aimAngle, speed: BALL.minSpeed + this.power * (BALL.maxSpeed - BALL.minSpeed), spin: this.spin }
+    const bonus = BALLS[this.ballId].bonuses
+    return {
+      x: this.stanceX,
+      angle: this.aimAngle * Math.max(0.7, 1 - bonus.precision * 0.35),
+      speed: BALL.minSpeed + this.power * (BALL.maxSpeed - BALL.minSpeed) * (1 + bonus.power),
+      spin: this.spin * (1 + bonus.control),
+    }
   }
 
   /** Fixed-step simulation (physics + slow motion). */
@@ -327,7 +344,7 @@ export class Game {
     this.director.stanceX = this.stanceX
     this.spin = 0
     predictPath(this.throwParams(), this.cond, this.path)
-    this.aim.show(this.path, this.cond.guide, this.stanceX, null, reticle, true)
+    this.aim.show(this.path, Math.min(1, this.cond.guide + BALLS[this.ballId].bonuses.precision * 0.2), this.stanceX, null, reticle, true)
     const pointerStart = this.input.pointerWasPressed()
     if (pointerStart) {
       // Aim where the press landed (touch taps a spot on the lane), then drag sideways for spin.
@@ -369,7 +386,7 @@ export class Game {
       else this.spin = THREE.MathUtils.clamp(this.spin + this.input.spinAxis() * dt * 2.2, -1, 1)
     }
     predictPath(this.throwParams(), this.cond, this.path)
-    this.aim.show(this.path, this.cond.guide, this.stanceX, this.power, null, false)
+    this.aim.show(this.path, Math.min(1, this.cond.guide + BALLS[this.ballId].bonuses.precision * 0.2), this.stanceX, this.power, null, false)
     this.ui.meter(this.power, this.spin)
     this.audio.setCharge(this.power)
     const released = this.chargeByPointer ? this.input.pointerWasReleased() || !this.input.pointer.down : this.input.wasReleased('throw') || !this.input.isDown('throw')

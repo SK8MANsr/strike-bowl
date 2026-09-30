@@ -97,12 +97,18 @@ export class Audio {
     const v = Math.min(1, Math.max(0.05, force))
     const pitch = 0.85 + Math.random() * 0.35
     if (heavy) {
-      this.tone(120, 50, 0.22, 'sine', 0.5 * v + 0.2)
-      this.burst(0.3, 0.45 * v + 0.15, 'lowpass', 1800, 0.7)
+      // A bowling ball has a felt/wood impact first, followed by the pin's hollow body.
+      this.tone(115, 42, 0.28, 'sine', 0.55 * v + 0.2)
+      this.burst(0.22, 0.42 * v + 0.16, 'lowpass', 520, 0.8, 0, this.sfx, 0.002)
+      this.burst(0.28, 0.32 * v + 0.12, 'lowpass', 1500, 0.9, 0.025)
     }
-    this.burst(0.06 + v * 0.05, 0.22 + v * 0.45, 'bandpass', 2400 * pitch, 2.5)
-    this.tone(900 * pitch, 700 * pitch, 0.09, 'triangle', 0.12 + v * 0.22)
-    this.tone(1640 * pitch, 1400 * pitch, 0.06, 'sine', 0.06 + v * 0.12)
+    const clack = (delay: number, scale: number) => {
+      this.burst(0.045 + v * 0.05, (0.18 + v * 0.42) * scale, 'bandpass', 1900 + Math.random() * 1600, 3.4, delay)
+      this.tone((760 + Math.random() * 500) * pitch, 520 * pitch, 0.075, 'triangle', (0.08 + v * 0.18) * scale, delay)
+    }
+    clack(0, 1)
+    if (heavy && v > 0.18) clack(0.045 + Math.random() * 0.035, 0.72)
+    if (heavy && v > 0.52) clack(0.11 + Math.random() * 0.06, 0.48)
   }
 
   /** Continuous ball roll rumble; call every frame while rolling (speed m/s, 0 = stop). */
@@ -174,8 +180,9 @@ export class Audio {
       case 'ui': this.tone(660, 720, 0.06, 'triangle', 0.16); break
       case 'tick': this.tone(1200, 1100, 0.025, 'square', 0.035); break
       case 'release':
-        this.burst(0.28, 0.18, 'bandpass', 900, 0.8, 0, this.sfx, 0.08)
-        this.tone(220, 110, 0.18, 'sine', 0.25)
+        this.burst(0.3, 0.16, 'bandpass', 760, 0.75, 0, this.sfx, 0.06)
+        this.burst(0.18, 0.12, 'lowpass', 230, 0.02, 0, this.sfx, 0.004)
+        this.tone(190, 95, 0.22, 'sine', 0.26)
         break
       case 'gutter':
         this.tone(140, 60, 0.35, 'sawtooth', 0.12)

@@ -144,5 +144,17 @@
   "a11y.pause": "暂停比赛",
   "a11y.left": "向左移动",
   "a11y.right": "向右移动",
-  "a11y.throw": "投球"
+  "a11y.throw": "投球",
+  "ball.title": "球道装备",
+  "ball.hint": "每次投球前选择",
+  "ball.locked": "在战役中解锁",
+  "ball.power": "力度",
+  "ball.precision": "瞄准",
+  "ball.control": "弧线",
+  "ball.balanced": "均衡",
+  "ball.classic.name": "经典",
+  "ball.precision.name": "Vector",
+  "ball.power.name": "Titan",
+  "ball.control.name": "Flux",
+  "ball.hybrid.name": "Apex"
 }

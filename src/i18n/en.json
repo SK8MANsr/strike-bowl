@@ -144,5 +144,17 @@
   "a11y.pause": "Pause game",
   "a11y.left": "Move left",
   "a11y.right": "Move right",
-  "a11y.throw": "Throw ball"
+  "a11y.throw": "Throw ball",
+  "ball.title": "Lane arsenal",
+  "ball.hint": "Choose before each throw",
+  "ball.locked": "Unlock in campaign",
+  "ball.power": "power",
+  "ball.precision": "aim",
+  "ball.control": "hook",
+  "ball.balanced": "balanced",
+  "ball.classic.name": "Classic",
+  "ball.precision.name": "Vector",
+  "ball.power.name": "Titan",
+  "ball.control.name": "Flux",
+  "ball.hybrid.name": "Apex"
 }

@@ -14,12 +14,20 @@ import { Leaderboard, type SubmitResult } from './net/leaderboard'
 import { readChallenge } from './ui/share'
 import { Ui } from './ui/ui'
 import { dailyLane, utcDay } from './game/daily'
+import { normalizeBallState, type BallId } from './game/balls'
 
 async function boot(): Promise<void> {
   const canvas = document.querySelector<HTMLCanvasElement>('#game')!
   const firstRun = safeGet(SAVE_KEY) === null
   const save = new SaveStore()
   const campaignStore = new CampaignStore()
+  const syncBallRewards = () => {
+    const totalStars = campaignStore.data.stars.reduce((sum, stars) => sum + stars, 0)
+    const state = normalizeBallState(save.data.ballsUnlocked, save.data.equippedBall, totalStars)
+    if (state.unlocked.join('|') !== save.data.ballsUnlocked.join('|') || state.equipped !== save.data.equippedBall) save.update({ ballsUnlocked: state.unlocked, equippedBall: state.equipped })
+    return state
+  }
+  syncBallRewards()
   let campaign: CampaignView
   const i18n = new I18n(resolveLocale(save.data.locale, navigator.languages))
   document.documentElement.lang = i18n.locale
@@ -142,6 +150,13 @@ async function boot(): Promise<void> {
       }
       if (qualityChanged) renderer?.applyQuality(save.data.quality)
     },
+    ball: (id: BallId) => {
+      const state = syncBallRewards()
+      if (!state.unlocked.includes(id)) return
+      save.update({ equippedBall: id })
+      game?.setBall(id)
+      ui.refreshBalls()
+    },
   })
   campaign = new CampaignView(i18n, campaignStore)
   ui.onHud = h => campaign.hud(h)
@@ -172,6 +187,7 @@ async function boot(): Promise<void> {
   renderer = r
   const g = new GameClass(input, audio, ui, lane, r.shadowMapSize)
   game = g
+  g.setBall(save.data.equippedBall)
   g.reducedMotion = save.data.reducedMotion
   g.best = save.data.best
   g.target = challenge?.score ?? null
@@ -185,6 +201,7 @@ async function boot(): Promise<void> {
     if (campaign.match) {
       campaign.match.playerScore = summary.score
       campaignStore.finish(campaign.match.stage, summary.score, campaign.match.bot.score)
+      syncBallRewards()
     }
     save.update({
       best: Math.max(save.data.best, summary.score),

@@ -1,4 +1,4 @@
-# Strike Bowl • Boliche Neon — 1.2.1
+# Strike Bowl • Boliche Neon — 1.3.0
 
 Jogo web 3D completo de cinco rodadas, construído com Three.js, Rapier e Vite.
 A interface neon, física, trilha/efeitos sintetizados, câmera de acompanhamento e cartões de compartilhamento foram preservados e aprimorados sobre a base original.
@@ -13,14 +13,17 @@ A pasta `dist/` contém a versão compilada de produção. Não precisa instalar
 - Endereço local: `http://127.0.0.1:8080/`. Ctrl+C encerra o servidor.
 
 Recomendado: Node.js 24. A abertura direta de `dist/index.html` pelo protocolo file:// não é suportada.
-O servidor local recebe conexões somente do próprio computador. Para jogar no iPhone, publique `dist/` em HTTPS. A configuração de build para Vercel está incluída; nenhuma publicação foi realizada neste pacote.
+ O servidor local recebe conexões somente do próprio computador. Para jogar no iPhone, publique `dist/` em HTTPS. A configuração de build para Vercel está incluída; a publicação de produção desta versão será registrada após a validação da URL.
 
 ## O que está incluído
 
 - Cinco rodadas com strikes, spares e bônus finais; partida perfeita = 150.
 - Teclado, mouse, toque e gamepad; força e efeito; cancelamento seguro de gestos.
 - Pista diária com dificuldade progressiva, guia de mira e condições determinísticas.
-- Português brasileiro, inglês e chinês simplificado: 141 textos por idioma.
+- Português brasileiro, inglês e chinês simplificado: 154 textos por idioma.
+- Arsenal de bolas coloridas desbloqueáveis: Vector (mira), Titan (força), Flux (efeito) e Apex (híbrida), selecionável antes de cada jogada.
+- Mapa de campanha redesenhado em padrão premium enterprise, com rota, progresso, estados e foco na próxima disputa.
+- Áudio procedural refinado com rolagem da bola, impacto grave, clatter de madeira e quedas escalonadas de pinos.
 - Qualidade gráfica leve/equilibrada/máxima, bloom na qualidade máxima e redução de movimento.
 - Música e efeitos sonoros com ajuste de volume e opção de silêncio.
 - Recordes, ajustes e melhores partidas locais, com tolerância a armazenamento indisponível.

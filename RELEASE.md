@@ -1,4 +1,23 @@
-# Strike Bowl 1.0.0 — entrega final
+# Strike Bowl 1.3.0 — entrega final
+
+## Atualização 1.3.0 — arsenal e campanha premium
+
+- Adicionado sistema persistente de recompensas: cinco bolas coloridas, desbloqueadas por estrelas da campanha, com bônus de mira, força, efeito e combinação híbrida.
+- Adicionado seletor lateral no HUD, responsivo e acessível, permitindo trocar a bola antes de cada jogada.
+- Redesenhado o mapa de fases com rota estratégica, cartões glass, progresso visual, estados de bloqueio e foco no próximo objetivo.
+- Refinado o áudio Web Audio para simular pista, madeira e pinos com camadas de impacto, rolamento e clatter escalonado.
+- Mantida compatibilidade com saves anteriores: jogadores antigos iniciam com a bola Classic e desbloqueiam as demais normalmente.
+
+### Evidência adicional
+
+| Verificação | Resultado |
+|---|---|
+| Vitest completo | 60 testes aprovados em 9 arquivos |
+| Build de produção e PWA offline | Aprovados |
+| Smoke e aceitação móvel/teclado/gamepad | Aprovados |
+| Campanha oficial | CAMPAIGN PASS |
+| Check offline oficial | offline: OK |
+
 
 Data de validação: 30/09/2026.
 

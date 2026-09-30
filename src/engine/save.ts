@@ -1,3 +1,5 @@
+import { DEFAULT_BALL, normalizeBallState, type BallId } from '../game/balls'
+
 /**
  * Versioned local save. Everything the player keeps between sessions lives in one JSON record so
  * it is easy to migrate. Corrupt or foreign data falls back to defaults instead of crashing.
@@ -29,6 +31,8 @@ export type SaveData = {
   bestDay: string
   games: number
   strikes: number
+  ballsUnlocked: BallId[]
+  equippedBall: BallId
 }
 
 export const SAVE_KEY = 'strikebowl.save'
@@ -54,6 +58,8 @@ export function defaultSave(): SaveData {
     bestDay: '',
     games: 0,
     strikes: 0,
+    ballsUnlocked: [DEFAULT_BALL],
+    equippedBall: DEFAULT_BALL,
   }
 }
 
@@ -96,6 +102,8 @@ export function parseSave(raw: string | null): SaveData {
     bestDay: typeof data.bestDay === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(data.bestDay) ? data.bestDay : '',
     games: intIn(data.games, 0, 1e7),
     strikes: intIn(data.strikes, 0, 1e8),
+    ballsUnlocked: normalizeBallState(data.ballsUnlocked, data.equippedBall, Number.POSITIVE_INFINITY).unlocked,
+    equippedBall: normalizeBallState(data.ballsUnlocked, data.equippedBall, Number.POSITIVE_INFINITY).equipped,
   }
 }
 

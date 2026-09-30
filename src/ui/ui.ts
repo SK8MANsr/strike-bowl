@@ -6,6 +6,7 @@ import { fillScoreCard, scoreCardTemplate } from './scorecard'
 import type { GameUI, HudState, Phase, Summary } from '../game/game'
 import type { BoardPage, Leaderboard, SubmitResult } from '../net/leaderboard'
 import { challengeLink, drawShareCard } from './share'
+import { BALLS, BALL_ORDER, type BallId } from '../game/balls'
 
 export type Screen = 'boot' | 'title' | 'hud' | 'pause' | 'settings' | 'board' | 'results' | 'share' | 'campaign'
 
@@ -18,6 +19,7 @@ export type UiActions = {
   pause(): void
   campaign(): void
   stage(n: number): void
+  ball(id: BallId): void
 }
 
 const esc = (s: string) => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!)
@@ -140,6 +142,7 @@ export class Ui implements GameUI {
         <div class="hud-stat"><span data-i18n="hud.max"></span><b data-hud="max">150</b></div>
       </div>
     </div>
+    <aside class="ball-rack" aria-live="polite"></aside>
   </div>
   <div class="hud-combo outlined" hidden></div>
   <div class="banner" aria-live="polite"><b class="banner-big outlined"></b><span class="banner-sub"></span></div>
@@ -260,6 +263,7 @@ export class Ui implements GameUI {
     }
     this.root.dataset.activeScreen = screen
     if (screen === 'title') this.renderTitle()
+    if (screen === 'hud') this.refreshBalls()
     if (screen === 'board') void this.renderBoard()
     requestAnimationFrame(() => {
       const items = this.navItems()
@@ -294,6 +298,7 @@ export class Ui implements GameUI {
     if (this.lastHud) this.hud(this.lastHud)
     if (this.summary && (this.screen === 'results' || this.stack.includes('results'))) this.renderResults()
     this.refreshSettings()
+    this.refreshBalls()
     this.onTranslate?.()
   }
 
@@ -380,9 +385,13 @@ export class Ui implements GameUI {
   }
 
   private onClick(e: Event): void {
-    const el = (e.target as HTMLElement).closest<HTMLElement>('[data-act], [data-v], [data-period], .toggle')
+    const el = (e.target as HTMLElement).closest<HTMLElement>('[data-act], [data-v], [data-period], [data-ball], .toggle')
     if (!el) return
     this.audio.unlock()
+    if (el.dataset.ball) {
+      this.actions.ball(el.dataset.ball as BallId)
+      return
+    }
     if (el.dataset.period) {
       this.boardPeriod = el.dataset.period as 'today' | 'all'
       void this.renderBoard()
@@ -421,6 +430,19 @@ export class Ui implements GameUI {
       case 'download': this.downloadCard(); break
       case 'nativeShare': void this.nativeShare(); break
     }
+  }
+
+  refreshBalls(): void {
+    const rack = this.root.querySelector<HTMLElement>('.ball-rack')
+    if (!rack) return
+    const unlocked = new Set(this.save.data.ballsUnlocked)
+    rack.innerHTML = `<div class="ball-rack-head"><span>${esc(this.t('ball.title'))}</span><small>${esc(this.t('ball.hint'))}</small></div><div class="ball-rack-list">${BALL_ORDER.map(id => {
+      const spec = BALLS[id]
+      const available = unlocked.has(id)
+      const selected = this.save.data.equippedBall === id
+      const bonus = spec.bonuses.power ? `+${Math.round(spec.bonuses.power * 100)}% ${this.t('ball.power')}` : spec.bonuses.precision ? `+${Math.round(spec.bonuses.precision * 100)}% ${this.t('ball.precision')}` : spec.bonuses.control ? `+${Math.round(spec.bonuses.control * 100)}% ${this.t('ball.control')}` : this.t('ball.balanced')
+      return `<button class="ball-card ${selected ? 'selected' : ''} ${available ? '' : 'locked'}" data-ball="${id}" ${available ? '' : 'disabled'} aria-pressed="${selected}" style="--ball:${spec.color};--ball-accent:${spec.accent}"><span class="ball-swatch"></span><span class="ball-copy"><b>${esc(this.t(`ball.${id}.name`))}</b><small>${esc(available ? bonus : this.t('ball.locked'))}</small></span>${selected ? '<i>✓</i>' : ''}</button>`
+    }).join('')}</div>`
   }
 
   private onInput(e: Event): void {

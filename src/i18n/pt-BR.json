@@ -144,5 +144,17 @@
   "a11y.pause": "Pausar partida",
   "a11y.left": "Mover para a esquerda",
   "a11y.right": "Mover para a direita",
-  "a11y.throw": "Lançar bola"
+  "a11y.throw": "Lançar bola",
+  "ball.title": "Arsenal de pista",
+  "ball.hint": "Escolha antes de cada jogada",
+  "ball.locked": "Desbloqueie na campanha",
+  "ball.power": "força",
+  "ball.precision": "mira",
+  "ball.control": "efeito",
+  "ball.balanced": "equilibrada",
+  "ball.classic.name": "Classic",
+  "ball.precision.name": "Vector",
+  "ball.power.name": "Titan",
+  "ball.control.name": "Flux",
+  "ball.hybrid.name": "Apex"
 }
