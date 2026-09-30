@@ -91,3 +91,6 @@ body.has-touch #ui[data-phase='aim'] .hud-bottom .touch,body.has-touch #ui[data-
 #ui .ball-launcher{position:relative;top:auto;right:auto;margin:8px max(12px,var(--safe-r)) 0 auto}
 #ui .ball-drawer{position:relative;top:auto;right:auto;margin:8px max(12px,var(--safe-r)) 0 auto}
 @media(max-width:699px){#ui .ball-launcher{margin-top:8px;margin-right:max(8px,var(--safe-r))}#ui .ball-drawer{margin-top:8px;margin-right:max(8px,var(--safe-r))}}
+
+/* The challenge remains visible on title/results; never cover the active playfield. */
+#ui[data-active-screen="hud"] .hud-challenge{display:none!important}

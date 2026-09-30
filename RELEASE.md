@@ -1,3 +1,27 @@
+# Strike Bowl 1.4.1 — correção de HUD e campanha
+
+## Correção 1.4.1
+
+- Corrigida a janela do desafio diário que era renderizada dentro do HUD ativo e cobria a área superior da pista, prejudicando a visibilidade da bola, pinos e jogador.
+- O desafio continua visível na tela inicial e no resultado, mas não aparece sobre a jogabilidade.
+- Corrigida a interação dos nós da campanha em touch: os botões agora priorizam tap em vez de gesto de rolagem.
+- Adicionada margem inferior com safe-area e `scroll-padding` à tela da campanha para evitar que fases ou ações fiquem escondidas atrás da barra do navegador.
+- Adicionada regressão UX automatizada para impedir o retorno da sobreposição e garantir a interação mobile.
+
+### Evidência 1.4.1
+
+| Verificação | Resultado |
+|---|---|
+| Vitest completo | 68 testes aprovados em 12 arquivos |
+| Build de produção/PWA | Aprovado |
+| Smoke | Aprovado |
+| Aceitação mobile/teclado/gamepad | Aprovada |
+| Campanha oficial | CAMPAIGN PASS |
+| Check offline | offline: OK |
+| Layout responsivo | Aprovado em 6 viewports |
+
+Data de validação: 30/09/2026.
+
 # Strike Bowl 1.4.0 — carregamento, acessibilidade e desafios
 
 ## Atualização 1.4.0
@@ -24,8 +48,6 @@
 | Layout responsivo | Aprovado em 6 viewports |
 
 Data de validação: 30/09/2026.
-
-## Correção 1.3.2 — posicionamento do arsenal
 
 ## Correção 1.3.2 — posicionamento do arsenal
 
